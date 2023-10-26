@@ -69,3 +69,14 @@ export const put_productSchema = Joi.object({
 
   return true;
 });
+
+export const put_params_productSchema = Joi.object({
+  id: Joi.number().required().messages({
+    'number.empty': 'El parámetro "id" no puede estar vacio',
+    'any.required': 'El parámetro "id" es obligatorio',
+    '*': 'Revisa el parámetro "id"',
+  }),
+});
+
+// They are the same
+export const delete_params_productSchema = put_params_productSchema;

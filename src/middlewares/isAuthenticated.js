@@ -13,7 +13,7 @@ const isAuthenticated = (req, res, next) => {
     return;
   }
 
-  // Separo el "Bearer" del token
+  // Separate the word "Bearer" from the token
   const token = authHeader.split(' ')[1];
 
   try {
@@ -21,10 +21,10 @@ const isAuthenticated = (req, res, next) => {
 
     req.user = tokenInfo;
 
-    // token valido
+    // valid token
     next();
   } catch (err) {
-    // token no valido
+    // invalid token
     res.status(401).json({
       message: 'Token no valido o expirado',
     });

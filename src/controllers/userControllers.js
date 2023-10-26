@@ -46,7 +46,7 @@ export const getUser = async (req, res) => {
     return;
   }
 
-  // Solo puedes ver tu propio perfil o si eres admin todos
+  // You can only see your own profile or, if you are admin, all
   if (id !== req.user._id && !req.user.isAdmin) {
     res.status(403).json({
       message: 'No tienes permisos para realizar esta acción',
@@ -127,16 +127,9 @@ export const postUser = async (req, res) => {
 
 export const putUser = async (req, res) => {
   const { params, body } = req || {};
-  const { id } = params || {};
+  const { id } = params;
 
-  if (!id) {
-    res.status(400).json({
-      message: 'Falta el id del usuario',
-    });
-    return;
-  }
-
-  // Solo puedes editar tu propio perfil o si eres admin todos
+  // You can only edit your own profile or, if you are admin, all
   if (id !== req.user._id && !req.user.isAdmin) {
     res.status(403).json({
       message: 'No tienes permisos para realizar esta acción',
@@ -178,16 +171,9 @@ export const putUser = async (req, res) => {
 // Only change isActive property
 export const deleteUser = async (req, res) => {
   const { params } = req || {};
-  const { id } = params || {};
+  const { id } = params;
 
-  if (!id) {
-    res.status(400).json({
-      message: 'Falta el id del usuario',
-    });
-    return;
-  }
-
-  // Solo puedes eliminar tu propio perfil o si eres admin todos
+  // You can only delete your own profile or, if you are admin, all
   if (id !== req.user._id && !req.user.isAdmin) {
     res.status(403).json({
       message: 'No tienes permisos para realizar esta acción',
@@ -198,10 +184,10 @@ export const deleteUser = async (req, res) => {
   try {
     const action = await UserDb.updateOne(
       {
-        _id: id,
+        _id: id, // condition
       },
       {
-        isActive: false,
+        isActive: false, // what to update
       },
     );
 

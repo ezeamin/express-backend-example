@@ -4,27 +4,43 @@ Descripción corta del proyecto.
 
 ## Requisitos
 
-Asegúrate de tener Node.js 20.6+ instalado en tu máquina, y una cuenta de MongoDB para conectar con una DB propia, hosteada o local.
+Es necesario tener Node.js 20.6+ instalado en la PC, y una cuenta de MongoDB para conectar con una DB propia, hosteada o local.
 
 - [Node.js](https://nodejs.org/en/) -> Importante: Debe ser 20.6+ para que funcione el archivo `.env`
 - [MongoDB](https://www.mongodb.com/)
 
 ## Instalación
 
-1. Clona este repositorio.
-2. Ejecuta `npm install` para instalar las dependencias.
+1. Clonar este repositorio.
+2. Ejecutar `npm install` para instalar las dependencias.
 
 ## Configuración
 
-- Crea un archivo `.env` en la raíz del proyecto y configura las variables de entorno necesarias, que están definidas en el archivo `.env_sample`.
+- Crear un archivo `.env` en la raíz del proyecto y configurar las variables de entorno necesarias, que están definidas en el archivo `.env_sample`.
 
 ## Uso
 
-Para iniciar el servidor, ejecuta:
+- Opcion 1: Hacer el build
 
-```bash
-npm start
-```
+  Para iniciar el servidor, ejecutar:
+
+  ```bash
+  npm run build
+  ```
+
+  y con la build ya realizada, ejecutar:
+
+  ```bash
+  npm start
+  ```
+
+- Opcion 2: Modo desarrollo
+
+  Sino, puede correrse en modo desarrollo utilizando:
+
+  ```bash
+  npm run dev
+  ```
 
 ## Documentación de API
 

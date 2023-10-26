@@ -11,9 +11,12 @@ import {
 import isAdmin from '../middlewares/isAdmin.js';
 import isAuthenticated from '../middlewares/isAuthenticated.js';
 import validateBody from '../middlewares/validateBody.js';
+import validateParams from '../middlewares/validateParams.js';
 
 import {
+  delete_params_userSchema,
   post_userSchema,
+  put_params_userSchema,
   put_userSchema,
 } from '../helpers/validationSchemas/userSchemas.js';
 
@@ -34,11 +37,17 @@ routerUsers.post(
 routerUsers.put(
   '/:id',
   isAuthenticated,
+  (req, res, next) => validateParams(req, res, next, put_params_userSchema),
   (req, res, next) => validateBody(req, res, next, put_userSchema),
   putUser,
 );
 
 // DELETE -----------
-routerUsers.delete('/:id', isAuthenticated, deleteUser);
+routerUsers.delete(
+  '/:id',
+  isAuthenticated,
+  (req, res, next) => validateParams(req, res, next, delete_params_userSchema),
+  deleteUser,
+);
 
 export default routerUsers;

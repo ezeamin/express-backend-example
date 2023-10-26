@@ -1,5 +1,5 @@
-const validateBody = (req, res, next, schema) => {
-  const { error } = schema.validate(req.body);
+const validateParams = (req, res, next, schema) => {
+  const { error } = schema.validate(req.params);
 
   if (error) {
     res.status(400).json({ errors: error.details });
@@ -10,4 +10,4 @@ const validateBody = (req, res, next, schema) => {
   next();
 };
 
-export default validateBody;
+export default validateParams;

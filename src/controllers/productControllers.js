@@ -4,7 +4,8 @@ import ProductsDb from '../models/ProductSchema.js';
 // GET
 // ----------------------------
 
-// El "_" es un parámetro que no se usa (sería el req), pero que se pone para que no de error
+// The "_" is a parameter that is not used (it would be the "req")
+// but it is put so that it does not give an error
 export const getProducts = async (_, res) => {
   try {
     const data = await ProductsDb.find();
@@ -20,7 +21,7 @@ export const getProducts = async (_, res) => {
 };
 
 export const getProduct = async (req, res) => {
-  // params es lo que viene dentro del endpoint como dato (ver ruta de endpoint)
+  // params is what comes inside the endpoint as data (see endpoint route)
   const { params } = req || {};
   const { id } = params || {};
 
@@ -81,22 +82,15 @@ export const postProduct = async (req, res) => {
 // ----------------------------
 
 export const putProduct = async (req, res) => {
-  // Traemos el id del producto a actualizar
+  // We read the id of the product to update
   const { params } = req || {};
-  const { id } = params || {};
+  const { id } = params;
 
-  if (!id) {
-    res.status(400).json({
-      message: 'Falta el id del producto',
-    });
-    return;
-  }
-
-  // Traemos el contenido (nuevos datos)
+  // We bring the content (new data)
   const { body } = req;
 
   try {
-    // filter,newData,options
+    // (filter,newData,options)
     const action = await ProductsDb.updateOne({ _id: id }, body, {
       new: true,
     });
@@ -126,14 +120,7 @@ export const putProduct = async (req, res) => {
 
 export const deleteProduct = async (req, res) => {
   const { params } = req || {};
-  const { id } = params || {};
-
-  if (!id) {
-    res.status(400).json({
-      message: 'Falta el id del producto',
-    });
-    return;
-  }
+  const { id } = params;
 
   try {
     const action = await ProductsDb.updateOne({ _id: id }, { isActive: false });
