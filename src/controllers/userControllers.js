@@ -157,6 +157,14 @@ export const putUser = async (req, res) => {
       message: 'Usuario actualizado exitosamente',
     });
   } catch (err) {
+    if (err.message.includes('duplicate')) {
+      res.status(400).json({
+        data: null,
+        message: `El usuario con username "${body.username}" ya existe`,
+      });
+      return;
+    }
+
     res.status(500).json({
       errors: {
         data: null,

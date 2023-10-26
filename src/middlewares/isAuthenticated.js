@@ -8,6 +8,7 @@ const isAuthenticated = (req, res, next) => {
 
   if (!authHeader) {
     res.status(401).json({
+      data: null,
       message: 'Token no detectado en el header "Authorization"',
     });
     return;
@@ -26,6 +27,7 @@ const isAuthenticated = (req, res, next) => {
   } catch (err) {
     // invalid token
     res.status(401).json({
+      data: null,
       message: 'Token no valido o expirado',
     });
   }

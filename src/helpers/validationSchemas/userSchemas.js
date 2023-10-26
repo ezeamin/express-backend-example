@@ -123,8 +123,9 @@ export const put_userSchema = Joi.object({
 // ----------------------------
 
 export const get_params_userSchema = Joi.object({
-  id: Joi.number().required().messages({
-    'number.empty': 'El parámetro "id" no puede estar vacio',
+  id: Joi.string().required().length(24).messages({
+    'string.empty': 'El parámetro "id" no puede estar vacio',
+    'string.length': 'El parámetro "id" debe ser un id válido',
     'any.required': 'El parámetro "id" es obligatorio',
     '*': 'Revisa el parámetro "id"',
   }),
