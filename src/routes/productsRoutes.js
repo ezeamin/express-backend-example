@@ -57,8 +57,7 @@ routerProducts.delete(
   '/:id',
   isAuthenticated,
   isAdmin,
-  (req, res, next) =>
-    validateParams(req, res, next, delete_params_productSchema),
+  (req, res, next) => validateParams(req, res, next, delete_params_productSchema),
   deleteProduct,
 );
 
