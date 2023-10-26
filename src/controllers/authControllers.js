@@ -22,6 +22,7 @@ export const postLogin = async (req, res) => {
     // b. incorrect password (we compare them using bcrypt)
     if (!user || !bcrypt.compareSync(req.body.password, user.password)) {
       res.status(400).json({
+        data: null,
         message: 'Usuario o contraseña no valida(s)',
       });
       return;
@@ -42,11 +43,13 @@ export const postLogin = async (req, res) => {
 
     // 4- Send JWT to FE
     res.json({
-      token,
+      data: token,
+      message: 'Login exitoso',
     });
   } catch (err) {
     res.status(500).json({
       errors: {
+        data: null,
         message: `ERROR: ${err}`,
       },
     });

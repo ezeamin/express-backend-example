@@ -7,13 +7,6 @@ import UserDb from '../models/UserSchema.js';
 // ----------------------------
 
 export const getUsers = async (req, res) => {
-  if (!req.user.isAdmin) {
-    res.status(403).json({
-      message: 'No tienes permisos para realizar esta acción',
-    });
-    return;
-  }
-
   try {
     const data = await UserDb.find();
 
@@ -25,10 +18,12 @@ export const getUsers = async (req, res) => {
 
     res.json({
       data: filteredData,
+      message: data.length > 0 ? 'Usuarios encontrados' : 'Listado vacío',
     });
   } catch (err) {
     res.status(500).json({
       errors: {
+        data: null,
         message: `ERROR: ${err}`,
       },
     });
@@ -36,19 +31,14 @@ export const getUsers = async (req, res) => {
 };
 
 export const getUser = async (req, res) => {
-  const { params } = req || {};
-  const { id } = params || {};
-
-  if (!id) {
-    res.status(400).json({
-      message: 'Falta el id del usuario',
-    });
-    return;
-  }
+  const {
+    params: { id },
+  } = req;
 
   // You can only see your own profile or, if you are admin, all
   if (id !== req.user._id && !req.user.isAdmin) {
     res.status(403).json({
+      data: null,
       message: 'No tienes permisos para realizar esta acción',
     });
     return;
@@ -59,6 +49,7 @@ export const getUser = async (req, res) => {
 
     if (!data) {
       res.status(404).json({
+        data: null,
         message: 'Usuario no encontrado',
       });
       return;
@@ -69,10 +60,12 @@ export const getUser = async (req, res) => {
 
     res.json({
       data,
+      message: 'Usuario encontrado',
     });
   } catch (err) {
     res.status(500).json({
       errors: {
+        data: null,
         message: `ERROR: ${err}`,
       },
     });
@@ -103,11 +96,13 @@ export const postUser = async (req, res) => {
     await newUser.save();
 
     res.json({
+      data: null,
       message: 'Usuario creado exitosamente',
     });
   } catch (err) {
     if (err.message.includes('duplicate')) {
       res.status(400).json({
+        data: null,
         message: `El usuario con username "${body.username}" ya existe`,
       });
       return;
@@ -115,6 +110,7 @@ export const postUser = async (req, res) => {
 
     res.status(500).json({
       errors: {
+        data: null,
         message: `ERROR: ${err}`,
       },
     });
@@ -126,12 +122,15 @@ export const postUser = async (req, res) => {
 // ----------------------------
 
 export const putUser = async (req, res) => {
-  const { params, body } = req || {};
-  const { id } = params;
+  const {
+    params: { id },
+    body,
+  } = req;
 
   // You can only edit your own profile or, if you are admin, all
   if (id !== req.user._id && !req.user.isAdmin) {
     res.status(403).json({
+      data: null,
       message: 'No tienes permisos para realizar esta acción',
     });
     return;
@@ -147,17 +146,20 @@ export const putUser = async (req, res) => {
 
     if (action.modifiedCount === 0) {
       res.status(404).json({
+        data: null,
         message: 'Usuario no encontrado',
       });
       return;
     }
 
     res.json({
+      data: null,
       message: 'Usuario actualizado exitosamente',
     });
   } catch (err) {
     res.status(500).json({
       errors: {
+        data: null,
         message: `ERROR: ${err}`,
       },
     });
@@ -170,12 +172,14 @@ export const putUser = async (req, res) => {
 
 // Only change isActive property
 export const deleteUser = async (req, res) => {
-  const { params } = req || {};
-  const { id } = params;
+  const {
+    params: { id },
+  } = req || {};
 
   // You can only delete your own profile or, if you are admin, all
   if (id !== req.user._id && !req.user.isAdmin) {
     res.status(403).json({
+      data: null,
       message: 'No tienes permisos para realizar esta acción',
     });
     return;
@@ -193,17 +197,20 @@ export const deleteUser = async (req, res) => {
 
     if (action.matchedCount === 0) {
       res.status(404).json({
+        data: null,
         message: 'Usuario no encontrado',
       });
       return;
     }
 
     res.json({
+      data: null,
       message: 'Usuario eliminado exitosamente',
     });
   } catch (err) {
     res.status(500).json({
       errors: {
+        data: null,
         message: `ERROR: ${err}`,
       },
     });

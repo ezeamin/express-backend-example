@@ -15,6 +15,7 @@ import validateParams from '../middlewares/validateParams.js';
 
 import {
   delete_params_userSchema,
+  get_params_userSchema,
   post_userSchema,
   put_params_userSchema,
   put_userSchema,
@@ -24,7 +25,12 @@ const routerUsers = express.Router();
 
 // GET -----------
 routerUsers.get('/', isAuthenticated, isAdmin, getUsers);
-routerUsers.get('/:id', isAuthenticated, getUser);
+routerUsers.get(
+  '/:id',
+  isAuthenticated,
+  (req, res, next) => validateParams(req, res, next, get_params_userSchema),
+  getUser,
+);
 
 // POST -----------
 routerUsers.post(

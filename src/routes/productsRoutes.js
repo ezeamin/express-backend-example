@@ -15,6 +15,7 @@ import validateParams from '../middlewares/validateParams.js';
 
 import {
   delete_params_productSchema,
+  get_params_productSchema,
   post_productSchema,
   put_params_productSchema,
   put_productSchema,
@@ -26,7 +27,11 @@ const routerProducts = express.Router();
 
 // GET ---------------------------
 routerProducts.get('/', getProducts);
-routerProducts.get('/:id', getProduct);
+routerProducts.get(
+  '/:id',
+  (req, res, next) => validateParams(req, res, next, get_params_productSchema),
+  getProduct,
+);
 
 // POST ---------------------------
 routerProducts.post(

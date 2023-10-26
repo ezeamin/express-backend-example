@@ -1,5 +1,9 @@
 import Joi from 'joi';
 
+// ----------------------------
+// BODY
+// ----------------------------
+
 export const post_userSchema = Joi.object({
   name: Joi.string().required().trim().min(3).max(30).messages({
     'string.empty': 'El campo "name" no puede estar vacio',
@@ -103,7 +107,11 @@ export const put_userSchema = Joi.object({
   return true;
 });
 
-export const put_params_userSchema = Joi.object({
+// ----------------------------
+// PARAMS
+// ----------------------------
+
+export const get_params_userSchema = Joi.object({
   id: Joi.number().required().messages({
     'number.empty': 'El parámetro "id" no puede estar vacio',
     'any.required': 'El parámetro "id" es obligatorio',
@@ -112,4 +120,5 @@ export const put_params_userSchema = Joi.object({
 });
 
 // They are the same
-export const delete_params_userSchema = put_params_userSchema;
+export const put_params_userSchema = get_params_userSchema;
+export const delete_params_userSchema = get_params_userSchema;

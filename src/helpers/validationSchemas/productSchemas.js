@@ -1,5 +1,9 @@
 import Joi from 'joi';
 
+// ----------------------------
+// BODY
+// ----------------------------
+
 export const post_productSchema = Joi.object({
   name: Joi.string().required().trim().min(3).max(30).messages({
     'string.empty': 'El campo "name" no puede estar vacio',
@@ -70,7 +74,11 @@ export const put_productSchema = Joi.object({
   return true;
 });
 
-export const put_params_productSchema = Joi.object({
+// ----------------------------
+// PARAMS
+// ----------------------------
+
+export const get_params_productSchema = Joi.object({
   id: Joi.number().required().messages({
     'number.empty': 'El parámetro "id" no puede estar vacio',
     'any.required': 'El parámetro "id" es obligatorio',
@@ -79,4 +87,5 @@ export const put_params_productSchema = Joi.object({
 });
 
 // They are the same
-export const delete_params_productSchema = put_params_productSchema;
+export const put_params_productSchema = get_params_productSchema;
+export const delete_params_productSchema = get_params_productSchema;

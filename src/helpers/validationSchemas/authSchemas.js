@@ -1,5 +1,9 @@
 import Joi from 'joi';
 
+// ----------------------------
+// BODY
+// ----------------------------
+
 export const post_loginSchema = Joi.object({
   username: Joi.string().required().min(3).max(30)
     .messages({

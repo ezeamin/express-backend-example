@@ -10,10 +10,14 @@ export const getProducts = async (_, res) => {
   try {
     const data = await ProductsDb.find();
 
-    res.json(data);
+    res.json({
+      data,
+      message: data.length > 0 ? 'Productos encontrados' : 'Listado vacío',
+    });
   } catch (err) {
     res.status(500).json({
       errors: {
+        data: null,
         message: `ERROR: ${err}`,
       },
     });
@@ -22,25 +26,21 @@ export const getProducts = async (_, res) => {
 
 export const getProduct = async (req, res) => {
   // params is what comes inside the endpoint as data (see endpoint route)
-  const { params } = req || {};
-  const { id } = params || {};
-
-  if (!id) {
-    res.status(400).json({
-      message: 'Falta el id del producto',
-    });
-    return;
-  }
+  const {
+    params: { id },
+  } = req;
 
   try {
     const data = await ProductsDb.findOne({ _id: id });
 
     res.json({
       data,
+      message: data ? 'Producto encontrado' : 'Producto no encontrado',
     });
   } catch (err) {
     res.status(500).json({
       errors: {
+        data: null,
         message: `ERROR: ${err}`,
       },
     });
@@ -66,11 +66,13 @@ export const postProduct = async (req, res) => {
     await newProduct.save();
 
     res.json({
+      data: null,
       message: 'Producto creado exitosamente',
     });
   } catch (err) {
     res.status(500).json({
       errors: {
+        data: null,
         message: `ERROR: ${err}`,
       },
     });
@@ -83,8 +85,9 @@ export const postProduct = async (req, res) => {
 
 export const putProduct = async (req, res) => {
   // We read the id of the product to update
-  const { params } = req || {};
-  const { id } = params;
+  const {
+    params: { id },
+  } = req;
 
   // We bring the content (new data)
   const { body } = req;
@@ -97,17 +100,20 @@ export const putProduct = async (req, res) => {
 
     if (action.matchedCount === 0) {
       res.status(404).json({
+        data: null,
         message: 'Producto no encontrado',
       });
       return;
     }
 
     res.json({
+      data: null,
       message: 'Producto actualizado',
     });
   } catch (err) {
     res.status(500).json({
       errors: {
+        data: null,
         message: `ERROR: ${err}`,
       },
     });
@@ -119,25 +125,29 @@ export const putProduct = async (req, res) => {
 // ----------------------------
 
 export const deleteProduct = async (req, res) => {
-  const { params } = req || {};
-  const { id } = params;
+  const {
+    params: { id },
+  } = req;
 
   try {
     const action = await ProductsDb.updateOne({ _id: id }, { isActive: false });
 
     if (action.matchedCount === 0) {
       res.status(404).json({
+        data: null,
         message: 'Producto no encontrado',
       });
       return;
     }
 
     res.json({
+      data: null,
       message: 'Producto eliminado',
     });
   } catch (err) {
     res.status(500).json({
       errors: {
+        data: null,
         message: `ERROR: ${err}`,
       },
     });
