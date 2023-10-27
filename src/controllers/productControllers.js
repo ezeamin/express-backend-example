@@ -84,13 +84,11 @@ export const postProduct = async (req, res) => {
 // ----------------------------
 
 export const putProduct = async (req, res) => {
-  // We read the id of the product to update
+  // We read the id and data of the product to update
   const {
     params: { id },
+    body,
   } = req;
-
-  // We bring the content (new data)
-  const { body } = req;
 
   try {
     // (filter,newData,options)

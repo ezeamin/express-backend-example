@@ -10,17 +10,19 @@ const secretKey = process.env.JWT_SECRET_KEY;
 // ----------------------------
 
 export const postLogin = async (req, res) => {
+  const { body } = req;
+
   try {
     // 1- (Try to) Search user in DB
     const user = await UserDb.findOne({
-      username: req.body.username,
+      username: body.username,
     });
 
     // 2- Validate credentials
     // Cases:
     // a. incorrect username
     // b. incorrect password (we compare them using bcrypt)
-    if (!user || !bcrypt.compareSync(req.body.password, user.password)) {
+    if (!user || !bcrypt.compareSync(body.password, user.password)) {
       res.status(400).json({
         data: null,
         message: 'Usuario o contraseña no valida(s)',

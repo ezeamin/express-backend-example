@@ -79,9 +79,7 @@ export const getUser = async (req, res) => {
 export const postUser = async (req, res) => {
   const { body } = req;
 
-  const { password } = body;
-
-  const cryptedPassword = bcrypt.hashSync(password, 10);
+  const cryptedPassword = bcrypt.hashSync(body.password, 10);
 
   const newUser = new UserDb({
     name: body.name,
@@ -182,7 +180,7 @@ export const putUser = async (req, res) => {
 export const deleteUser = async (req, res) => {
   const {
     params: { id },
-  } = req || {};
+  } = req;
 
   // You can only delete your own profile or, if you are admin, all
   if (id !== req.user._id && !req.user.isAdmin) {
