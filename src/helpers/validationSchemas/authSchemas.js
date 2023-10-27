@@ -4,7 +4,7 @@ import Joi from 'joi';
 // BODY
 // ----------------------------
 
-export const post_loginSchema = Joi.object({
+export const post_authSchema = Joi.object({
   username: Joi.string().required().min(3).max(30)
     .messages({
       'string.empty': 'El campo "username" no puede estar vacio',

@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 
 import UserDb from '../models/UserSchema.js';
 
-const secretKey = process.env.JWT_SECRET_KEY;
+const SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 // ----------------------------
 // POST
@@ -39,7 +39,7 @@ export const postLogin = async (req, res) => {
     };
 
     // (payload, secretKey, options)
-    const token = jwt.sign(userInfo, secretKey, {
+    const token = jwt.sign(userInfo, SECRET_KEY, {
       expiresIn: '1h',
     });
 
