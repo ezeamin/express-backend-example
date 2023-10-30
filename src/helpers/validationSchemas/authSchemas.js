@@ -5,7 +5,8 @@ import Joi from 'joi';
 // ----------------------------
 
 export const post_authSchema = Joi.object({
-  username: Joi.string().required().min(3).max(30)
+  username: Joi.string().required().trim().min(3)
+    .max(30)
     .messages({
       'string.empty': 'El campo "username" no puede estar vacio',
       'string.min': 'El campo "username" debe tener al menos 3 caracteres',
@@ -13,7 +14,8 @@ export const post_authSchema = Joi.object({
       'any.required': 'El campo "username" es obligatorio',
       '*': 'Revisa el campo "username"',
     }),
-  password: Joi.string().required().min(3).max(30)
+  password: Joi.string().required().trim().min(3)
+    .max(30)
     .messages({
       'string.empty': 'El campo "password" no puede estar vacio',
       'string.min': 'El campo "password" debe tener al menos 3 caracteres',

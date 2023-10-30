@@ -5,14 +5,14 @@ import Joi from 'joi';
 // ----------------------------
 
 export const post_userSchema = Joi.object({
-  name: Joi.string().required().trim().min(3)
+  firstname: Joi.string().required().trim().min(3)
     .max(30)
     .messages({
-      'string.empty': 'El campo "name" no puede estar vacio',
-      'string.min': 'El campo "name" debe tener al menos 3 caracteres',
-      'string.max': 'El campo "name" debe tener maximo 30 caracteres',
-      'any.required': 'El campo "name" es obligatorio',
-      '*': 'Revisa el campo "name"',
+      'string.empty': 'El campo "firstname" no puede estar vacio',
+      'string.min': 'El campo "firstname" debe tener al menos 3 caracteres',
+      'string.max': 'El campo "firstname" debe tener maximo 30 caracteres',
+      'any.required': 'El campo "firstname" es obligatorio',
+      '*': 'Revisa el campo "firstname"',
     }),
   lastname: Joi.string().required().trim().min(3)
     .max(30)
@@ -59,12 +59,12 @@ export const post_userSchema = Joi.object({
 
 // copy post validation but remove "required" option
 export const put_userSchema = Joi.object({
-  name: Joi.string().trim().min(3).max(30)
+  firstname: Joi.string().trim().min(3).max(30)
     .messages({
-      'string.empty': 'El campo "name" no puede estar vacio',
-      'string.min': 'El campo "name" debe tener al menos 3 caracteres',
-      'string.max': 'El campo "name" debe tener maximo 30 caracteres',
-      '*': 'Revisa el campo "name"',
+      'string.empty': 'El campo "firstname" no puede estar vacio',
+      'string.min': 'El campo "firstname" debe tener al menos 3 caracteres',
+      'string.max': 'El campo "firstname" debe tener maximo 30 caracteres',
+      '*': 'Revisa el campo "firstname"',
     }),
   lastname: Joi.string().trim().min(3).max(30)
     .messages({
@@ -108,10 +108,10 @@ export const put_userSchema = Joi.object({
 }).custom((value, helpers) => {
   // At least one field
   const {
-    name, lastname, username, password, isAdmin,
+    firstname, lastname, username, password, isAdmin,
   } = value;
 
-  if (!name && !lastname && !username && !password && !isAdmin) {
+  if (!firstname && !lastname && !username && !password && !isAdmin) {
     return helpers.message('Al menos un campo debe estar presente en el body');
   }
 

@@ -1,14 +1,14 @@
 import bcrypt from 'bcryptjs';
 
-import UserDb from '../models/UserSchema.js';
+import UsersModel from '../models/UserSchema.js';
 
 // ----------------------------
 // GET
 // ----------------------------
 
-export const getUsers = async (req, res) => {
+export const getUsers = async (_, res) => {
   try {
-    const data = await UserDb.find();
+    const data = await UsersModel.find();
 
     // remove password from response
     const filteredData = data.map((user) => ({
@@ -18,7 +18,8 @@ export const getUsers = async (req, res) => {
 
     res.json({
       data: filteredData,
-      message: data.length > 0 ? 'Usuarios encontrados' : 'Listado vacío',
+      message:
+        filteredData.length > 0 ? 'Usuarios encontrados' : 'Listado vacío',
     });
   } catch (err) {
     res.status(500).json({
@@ -33,10 +34,11 @@ export const getUsers = async (req, res) => {
 export const getUser = async (req, res) => {
   const {
     params: { id },
+    user,
   } = req;
 
   // You can only see your own profile or, if you are admin, all
-  if (id !== req.user._id && !req.user.isAdmin) {
+  if (id !== user._id && !user.isAdmin) {
     res.status(403).json({
       data: null,
       message: 'No tienes permisos para realizar esta acción',
@@ -45,7 +47,7 @@ export const getUser = async (req, res) => {
   }
 
   try {
-    const data = await UserDb.findOne({ _id: id });
+    const data = await UsersModel.findOne({ _id: id });
 
     if (!data) {
       res.status(404).json({
@@ -81,8 +83,8 @@ export const postUser = async (req, res) => {
 
   const cryptedPassword = bcrypt.hashSync(body.password, 10);
 
-  const newUser = new UserDb({
-    name: body.name,
+  const newUser = new UsersModel({
+    firstname: body.firstname,
     lastname: body.lastname,
     username: body.username,
     password: cryptedPassword,
@@ -122,14 +124,24 @@ export const postUser = async (req, res) => {
 export const putUser = async (req, res) => {
   const {
     params: { id },
+    user,
     body,
   } = req;
 
   // You can only edit your own profile or, if you are admin, all
-  if (id !== req.user._id && !req.user.isAdmin) {
+  if (id !== user._id && !user.isAdmin) {
     res.status(403).json({
       data: null,
       message: 'No tienes permisos para realizar esta acción',
+    });
+    return;
+  }
+
+  // A not admin user can't set itself as one (or try to modify that value)
+  if (!user.isAdmin && 'isAdmin' in body) {
+    res.status(403).json({
+      data: null,
+      message: 'No tienes permisos para configurar los usuarios administradores',
     });
     return;
   }
@@ -140,7 +152,7 @@ export const putUser = async (req, res) => {
   }
 
   try {
-    const action = await UserDb.updateOne({ _id: id }, body);
+    const action = await UsersModel.updateOne({ _id: id }, body);
 
     if (action.modifiedCount === 0) {
       res.status(404).json({
@@ -180,10 +192,11 @@ export const putUser = async (req, res) => {
 export const deleteUser = async (req, res) => {
   const {
     params: { id },
+    user,
   } = req;
 
   // You can only delete your own profile or, if you are admin, all
-  if (id !== req.user._id && !req.user.isAdmin) {
+  if (id !== user._id && !user.isAdmin) {
     res.status(403).json({
       data: null,
       message: 'No tienes permisos para realizar esta acción',
@@ -192,7 +205,7 @@ export const deleteUser = async (req, res) => {
   }
 
   try {
-    const action = await UserDb.updateOne(
+    const action = await UsersModel.updateOne(
       {
         _id: id, // condition
       },

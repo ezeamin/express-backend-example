@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 
-import UserDb from '../models/UserSchema.js';
+import UsersModel from '../models/UserSchema.js';
 
 const SECRET_KEY = process.env.JWT_SECRET_KEY;
 
@@ -14,13 +14,13 @@ export const postLogin = async (req, res) => {
 
   try {
     // 1- (Try to) Search user in DB
-    const user = await UserDb.findOne({
+    const user = await UsersModel.findOne({
       username: body.username,
     });
 
     // 2- Validate credentials
     // Cases:
-    // a. incorrect username
+    // a. incorrect username (no user found)
     // b. incorrect password (we compare them using bcrypt)
     if (!user || !bcrypt.compareSync(body.password, user.password)) {
       res.status(400).json({

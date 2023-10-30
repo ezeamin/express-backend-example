@@ -53,8 +53,8 @@ Ruta principal: `/api/v1/users`
 | ------ | -------- | --------- | -------------- | ----------- | ---- |
 | GET | `/` | ✅ | ✅ | Obtiene todos los usuarios | - |
 | GET | `/:id` | ✅ | ❌ | Obtiene un usuario por su id | - |
-| POST | `/` | ❌ | ❌ | Crea un nuevo usuario | `{ lastname: string, name: string, password: string, username: string }` |
-| PUT | `/:id` | ✅ | ❌ | Actualiza un usuario por su id | `{ isAdmin?: boolean, lastname?: string, name?: string, password?: string, username?: string }` |
+| POST | `/` | ❌ | ❌ | Crea un nuevo usuario | `{ lastname: string, firstname: string, password: string, username: string }` |
+| PUT | `/:id` | ✅ | ❌ | Actualiza un usuario por su id | `{ isAdmin?: boolean, lastname?: string, firstname?: string, password?: string, username?: string }` |
 | DELETE | `/:id` | ✅ | ❌ | Elimina un usuario por su id (borrado lógico) | - |
 
 #### Autenticación:

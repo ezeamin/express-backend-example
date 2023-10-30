@@ -1,14 +1,14 @@
-import ProductsDb from '../models/ProductSchema.js';
+import ProductsModel from '../models/ProductSchema.js';
 
 // ----------------------------
 // GET
 // ----------------------------
 
 // The "_" is a parameter that is not used (it would be the "req")
-// but it is put so that it does not give an error
+// but it is put so that it does not give an error (unused var)
 export const getProducts = async (_, res) => {
   try {
-    const data = await ProductsDb.find();
+    const data = await ProductsModel.find();
 
     res.json({
       data,
@@ -25,13 +25,13 @@ export const getProducts = async (_, res) => {
 };
 
 export const getProduct = async (req, res) => {
-  // params is what comes inside the endpoint as data (see endpoint route)
+  // params is what comes inside the endpoint url as data (see endpoint route)
   const {
     params: { id },
   } = req;
 
   try {
-    const data = await ProductsDb.findOne({ _id: id });
+    const data = await ProductsModel.findOne({ _id: id });
 
     res.json({
       data,
@@ -54,7 +54,7 @@ export const getProduct = async (req, res) => {
 export const postProduct = async (req, res) => {
   const { body } = req;
 
-  const newProduct = new ProductsDb({
+  const newProduct = new ProductsModel({
     name: body.name,
     price: body.price,
     description: body.description,
@@ -91,11 +91,10 @@ export const putProduct = async (req, res) => {
   } = req;
 
   try {
-    // (filter,newData,options)
-    const action = await ProductsDb.updateOne({ _id: id }, body, {
-      new: true,
-    });
+    // (filter,newData)
+    const action = await ProductsModel.updateOne({ _id: id }, body);
 
+    // matchedCount says how many elements were affected
     if (action.matchedCount === 0) {
       res.status(404).json({
         data: null,
@@ -128,7 +127,7 @@ export const deleteProduct = async (req, res) => {
   } = req;
 
   try {
-    const action = await ProductsDb.updateOne({ _id: id }, { isActive: false });
+    const action = await ProductsModel.updateOne({ _id: id }, { isActive: false });
 
     if (action.matchedCount === 0) {
       res.status(404).json({
