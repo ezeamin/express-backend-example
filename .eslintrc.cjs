@@ -10,7 +10,7 @@ module.exports = {
     'no-restricted-globals': 'off',
     'import/prefer-default-export': 'off',
     'no-underscore-dangle': 'off',
-    'no-console': 'off'
+    'no-console': 'off',
   },
   ignorePatterns: ['**/node_modules/**', '**/dist/**'],
 };
