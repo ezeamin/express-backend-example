@@ -11,10 +11,11 @@ export const getUsers = async (_, res) => {
     const data = await UsersModel.find();
 
     // remove password from response
-    const filteredData = data.map((user) => ({
-      ...user._doc,
-      password: undefined,
-    }));
+    const filteredData = data
+      .map((user) => ({
+        ...user._doc,
+        password: undefined,
+      }));
 
     res.json({
       data: filteredData,
@@ -141,7 +142,8 @@ export const putUser = async (req, res) => {
   if (!user.isAdmin && 'isAdmin' in body) {
     res.status(403).json({
       data: null,
-      message: 'No tienes permisos para configurar los usuarios administradores',
+      message:
+        'No tienes permisos para configurar los usuarios administradores',
     });
     return;
   }

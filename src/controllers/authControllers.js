@@ -16,6 +16,7 @@ export const postLogin = async (req, res) => {
     // 1- (Try to) Search user in DB
     const user = await UsersModel.findOne({
       username: body.username,
+      isActive: true,
     });
 
     // 2- Validate credentials
@@ -32,10 +33,12 @@ export const postLogin = async (req, res) => {
 
     // 3- Generate JWT
     // Everything is correct, generate JWT
-    // We remove the password from the user object, so that it doesn´t get sent to the FE
+    // We remove the password and isActive from the user object,
+    // so that it doesn´t get sent to the FE
     const userInfo = {
       ...user._doc,
       password: undefined,
+      isActive: undefined,
     };
 
     // (payload, secretKey, options)
