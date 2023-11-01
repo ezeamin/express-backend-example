@@ -3,8 +3,8 @@ const validateBody = (req, res, next, schema) => {
 
   if (error) {
     res.status(400).json({
-      data: error.details,
-      message: 'Petición invalida',
+      data: null,
+      message: error.details[0].message,
     });
     return;
   }

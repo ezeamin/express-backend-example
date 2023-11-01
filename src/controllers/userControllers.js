@@ -216,7 +216,7 @@ export const deleteUser = async (req, res) => {
       },
     );
 
-    if (action.matchedCount === 0) {
+    if (action.modifiedCount === 0) {
       res.status(404).json({
         data: null,
         message: 'Usuario no encontrado',

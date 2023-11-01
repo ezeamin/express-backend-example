@@ -94,8 +94,8 @@ export const putProduct = async (req, res) => {
     // (filter,newData)
     const action = await ProductsModel.updateOne({ _id: id }, body);
 
-    // matchedCount says how many elements were affected
-    if (action.matchedCount === 0) {
+    // modifiedCount says how many elements were affected
+    if (action.modifiedCount === 0) {
       res.status(404).json({
         data: null,
         message: 'Producto no encontrado',
@@ -129,7 +129,7 @@ export const deleteProduct = async (req, res) => {
   try {
     const action = await ProductsModel.updateOne({ _id: id }, { isActive: false });
 
-    if (action.matchedCount === 0) {
+    if (action.modifiedCount === 0) {
       res.status(404).json({
         data: null,
         message: 'Producto no encontrado',

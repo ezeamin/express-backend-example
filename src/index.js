@@ -18,7 +18,7 @@ const PORT = process.env.PORT || 5000;
 // 3- Middlewares
 app.use(morgan('dev'));
 app.use(cors());
-app.use(express.json()); // <==== Parse body as JSON (otherwise "undefined")
+app.use(express.json()); // <== Parse body as JSON (otherwise "undefined")
 
 // 4- Routes
 app.use('/api/v1/products', routerProducts);
