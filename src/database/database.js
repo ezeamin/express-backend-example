@@ -1,10 +1,11 @@
 import mongoose from 'mongoose';
 
-const mongoUri = process.env.MONGO_URI;
+const { MONGO_URI } = process.env;
 
 mongoose.set('strictQuery', true);
+
 mongoose
-  .connect(mongoUri)
+  .connect(MONGO_URI)
   .then(() => {
     console.log('DB conectada');
   })
