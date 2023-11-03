@@ -3,19 +3,21 @@ import bcrypt from 'bcryptjs';
 
 import UsersModel from '../models/UserSchema.js';
 
-const SECRET_KEY = process.env.JWT_SECRET_KEY;
+const { JWT_SECRET_KEY } = process.env;
 
 // ----------------------------
 // POST
 // ----------------------------
 
 export const postLogin = async (req, res) => {
-  const { body } = req;
+  const {
+    body: { username, password },
+  } = req;
 
   try {
     // 1- (Try to) Search user in DB
-    const user = await UsersModel.findOne({
-      username: body.username,
+    const userInDb = await UsersModel.findOne({
+      username,
       isActive: true,
     });
 
@@ -23,7 +25,7 @@ export const postLogin = async (req, res) => {
     // Cases:
     // a. incorrect username (no user found)
     // b. incorrect password (we compare them using bcrypt)
-    if (!user || !bcrypt.compareSync(body.password, user.password)) {
+    if (!userInDb || !bcrypt.compareSync(password, userInDb.password)) {
       res.status(400).json({
         data: null,
         message: 'Usuario o contraseña no valida(s)',
@@ -36,13 +38,13 @@ export const postLogin = async (req, res) => {
     // We remove the password and isActive from the user object,
     // so that it doesn´t get sent to the FE
     const userInfo = {
-      ...user._doc,
+      ...userInDb._doc,
       password: undefined,
       isActive: undefined,
     };
 
     // (payload, secretKey, options)
-    const token = jwt.sign(userInfo, SECRET_KEY, {
+    const token = jwt.sign(userInfo, JWT_SECRET_KEY, {
       expiresIn: '1h',
     });
 
