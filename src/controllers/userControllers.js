@@ -156,7 +156,7 @@ export const putUser = async (req, res) => {
   try {
     const action = await UsersModel.updateOne({ _id: id }, body);
 
-    if (action.modifiedCount === 0) {
+    if (action.matchedCount === 0) {
       res.status(404).json({
         data: null,
         message: 'Usuario no encontrado',
@@ -209,14 +209,15 @@ export const deleteUser = async (req, res) => {
   try {
     const action = await UsersModel.updateOne(
       {
-        _id: id, // condition
+        _id: id, // condition #1
+        isActive: true, // condition #2
       },
       {
         isActive: false, // what to update
       },
     );
 
-    if (action.modifiedCount === 0) {
+    if (action.matchedCount === 0) {
       res.status(404).json({
         data: null,
         message: 'Usuario no encontrado',
