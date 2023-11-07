@@ -24,7 +24,7 @@ export const postLogin = async (req, res) => {
     // a. incorrect username (no user found)
     // b. incorrect password (we compare them using bcrypt)
     if (!user || !bcrypt.compareSync(body.password, user.password)) {
-      res.status(400).json({
+      res.status(401).json({
         data: null,
         message: 'Usuario o contraseña no valida(s)',
       });
