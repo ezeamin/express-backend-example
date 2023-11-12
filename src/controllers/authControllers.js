@@ -16,8 +16,8 @@ export const postLogin = async (req, res) => {
 
   try {
     // 1- (Try to) Search user in DB
-    const userInDb = await UsersModel.findOne({
-      username,
+    const userInDB = await UsersModel.findOne({
+      username: username.trim(),
       isActive: true,
     });
 
@@ -25,7 +25,7 @@ export const postLogin = async (req, res) => {
     // Cases:
     // a. incorrect username (no user found)
     // b. incorrect password (we compare them using bcrypt)
-    if (!userInDb || !bcrypt.compareSync(password, userInDb.password)) {
+    if (!userInDB || !bcrypt.compareSync(password, userInDB.password.trim())) {
       res.status(401).json({
         data: null,
         message: 'Usuario o contraseña no valida(s)',
@@ -38,9 +38,13 @@ export const postLogin = async (req, res) => {
     // We remove the password and isActive from the user object,
     // so that it doesn´t get sent to the FE
     const userInfo = {
-      ...userInDb._doc,
-      password: undefined,
-      isActive: undefined,
+      user: {
+        id: userInDB._doc._id,
+        firstname: userInDB._doc.firstname,
+        lastname: userInDB._doc.lastname,
+        username: userInDB._doc.username,
+        isAdmin: userInDB._doc.isAdmin,
+      },
     };
 
     // (payload, secretKey, options)

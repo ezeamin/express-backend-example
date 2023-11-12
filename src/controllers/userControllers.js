@@ -10,12 +10,14 @@ export const getUsers = async (_, res) => {
   try {
     const data = await UsersModel.find();
 
-    // remove password from response
-    const filteredData = data
-      .map((user) => ({
-        ...user._doc,
-        password: undefined,
-      }));
+    // remove "password" and "isActive" from response
+    const filteredData = data.map((user) => ({
+      id: user._doc._id,
+      firstname: user._doc.firstname,
+      lastname: user._doc.lastname,
+      username: user._doc.username,
+      isAdmin: user._doc.isAdmin,
+    }));
 
     res.json({
       data: filteredData,
@@ -58,11 +60,16 @@ export const getUser = async (req, res) => {
       return;
     }
 
-    // remove password from response
-    data.password = undefined;
+    const filteredData = {
+      id: data._doc._id,
+      firstname: data._doc.firstname,
+      lastname: data._doc.lastname,
+      username: data._doc.username,
+      isAdmin: data._doc.isAdmin,
+    };
 
     res.json({
-      data,
+      data: filteredData,
       message: 'Usuario encontrado',
     });
   } catch (err) {
@@ -82,12 +89,12 @@ export const getUser = async (req, res) => {
 export const postUser = async (req, res) => {
   const { body } = req;
 
-  const cryptedPassword = bcrypt.hashSync(body.password, 10);
+  const cryptedPassword = bcrypt.hashSync(body.password.trim(), 10);
 
   const newUser = new UsersModel({
-    firstname: body.firstname,
-    lastname: body.lastname,
-    username: body.username,
+    firstname: body.firstname.trim(),
+    lastname: body.lastname.trim(),
+    username: body.username.trim(),
     password: cryptedPassword,
     isActive: true,
     isAdmin: false,
@@ -147,6 +154,13 @@ export const putUser = async (req, res) => {
     });
     return;
   }
+
+  // Trim body fields
+  Object.keys(body).forEach((key) => {
+    if (typeof body[key] === 'string') {
+      body[key] = body[key].trim();
+    }
+  });
 
   if (body.password) {
     const cryptedPassword = bcrypt.hashSync(body.password, 10);

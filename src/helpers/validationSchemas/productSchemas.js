@@ -42,6 +42,9 @@ export const post_productSchema = Joi.object({
       'any.required': 'El campo "image" es obligatorio',
       '*': 'Revisa el campo "image"',
     }),
+}).messages({
+  'object.unknown': 'El campo "{#key}" no está permitido',
+  '*': 'Formato del body incorrecto',
 });
 
 // copy post validation but remove "required" option
@@ -86,6 +89,9 @@ export const put_productSchema = Joi.object({
   }
 
   return true;
+}).messages({
+  'object.unknown': 'El campo "{#key}" no está permitido',
+  '*': 'Formato del body incorrecto',
 });
 
 // ----------------------------

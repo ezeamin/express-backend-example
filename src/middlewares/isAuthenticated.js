@@ -20,7 +20,7 @@ const isAuthenticated = (req, res, next) => {
   try {
     const tokenInfo = jwt.verify(token, secretKey);
 
-    req.user = tokenInfo;
+    req.user = tokenInfo.user;
 
     // valid token
     next();

@@ -23,4 +23,7 @@ export const post_authSchema = Joi.object({
       'any.required': 'El campo "password" es obligatorio',
       '*': 'Revisa el campo "password"',
     }),
+}).messages({
+  'object.unknown': 'El campo "{#key}" no está permitido',
+  '*': 'Formato del body incorrecto',
 });

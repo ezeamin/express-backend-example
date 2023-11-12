@@ -49,6 +49,9 @@ export const post_userSchema = Joi.object({
         'El campo "password" debe tener al menos un numero, una letra y un caracter especial',
       '*': 'Revisa el campo "password"',
     }),
+}).messages({
+  'object.unknown': 'El campo "{#key}" no está permitido',
+  '*': 'Formato del body incorrecto',
 });
 
 // copy post validation but remove "required" option
@@ -104,6 +107,9 @@ export const put_userSchema = Joi.object({
   }
 
   return true;
+}).messages({
+  'object.unknown': 'El campo "{#key}" no está permitido',
+  '*': 'Formato del body incorrecto',
 });
 
 // ----------------------------
