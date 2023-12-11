@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs';
+import HttpStatus from 'http-status-codes';
 
 import UsersModel from '../models/UserSchema.js';
 
@@ -25,7 +26,8 @@ export const getUsers = async (_, res) => {
         filteredData.length > 0 ? 'Usuarios encontrados' : 'Listado vacío',
     });
   } catch (err) {
-    res.status(500).json({
+    console.error('🟥', err);
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
       errors: {
         data: null,
         message: `ERROR: ${err}`,
@@ -42,7 +44,7 @@ export const getUser = async (req, res) => {
 
   // You can only see your own profile or, if you are admin, all
   if (id !== user._id && !user.isAdmin) {
-    res.status(403).json({
+    res.status(HttpStatus.FORBIDDEN).json({
       data: null,
       message: 'No tienes permisos para realizar esta acción',
     });
@@ -53,7 +55,7 @@ export const getUser = async (req, res) => {
     const data = await UsersModel.findOne({ _id: id });
 
     if (!data) {
-      res.status(404).json({
+      res.status(HttpStatus.NOT_FOUND).json({
         data: null,
         message: 'Usuario no encontrado',
       });
@@ -73,7 +75,8 @@ export const getUser = async (req, res) => {
       message: 'Usuario encontrado',
     });
   } catch (err) {
-    res.status(500).json({
+    console.error('🟥', err);
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
       errors: {
         data: null,
         message: `ERROR: ${err}`,
@@ -108,15 +111,17 @@ export const postUser = async (req, res) => {
       message: 'Usuario creado exitosamente',
     });
   } catch (err) {
+    console.error('🟥', err);
+
     if (err.message.includes('duplicate')) {
-      res.status(400).json({
+      res.status(HttpStatus.BAD_REQUEST).json({
         data: null,
         message: `El usuario con username "${body.username}" ya existe`,
       });
       return;
     }
 
-    res.status(500).json({
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
       errors: {
         data: null,
         message: `ERROR: ${err}`,
@@ -138,7 +143,7 @@ export const putUser = async (req, res) => {
 
   // You can only edit your own profile or, if you are admin, all
   if (id !== user._id && !user.isAdmin) {
-    res.status(403).json({
+    res.status(HttpStatus.FORBIDDEN).json({
       data: null,
       message: 'No tienes permisos para realizar esta acción',
     });
@@ -147,7 +152,7 @@ export const putUser = async (req, res) => {
 
   // A not admin user can't set itself as one (or try to modify that value)
   if (!user.isAdmin && 'isAdmin' in body) {
-    res.status(403).json({
+    res.status(HttpStatus.FORBIDDEN).json({
       data: null,
       message:
         'No tienes permisos para configurar los usuarios administradores',
@@ -171,7 +176,7 @@ export const putUser = async (req, res) => {
     const action = await UsersModel.updateOne({ _id: id }, body);
 
     if (action.matchedCount === 0) {
-      res.status(404).json({
+      res.status(HttpStatus.NOT_FOUND).json({
         data: null,
         message: 'Usuario no encontrado',
       });
@@ -184,14 +189,14 @@ export const putUser = async (req, res) => {
     });
   } catch (err) {
     if (err.message.includes('duplicate')) {
-      res.status(400).json({
+      res.status(HttpStatus.BAD_REQUEST).json({
         data: null,
         message: `El usuario con username "${body.username}" ya existe`,
       });
       return;
     }
 
-    res.status(500).json({
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
       errors: {
         data: null,
         message: `ERROR: ${err}`,
@@ -213,7 +218,7 @@ export const deleteUser = async (req, res) => {
 
   // You can only delete your own profile or, if you are admin, all
   if (id !== user._id && !user.isAdmin) {
-    res.status(403).json({
+    res.status(HttpStatus.FORBIDDEN).json({
       data: null,
       message: 'No tienes permisos para realizar esta acción',
     });
@@ -232,7 +237,7 @@ export const deleteUser = async (req, res) => {
     );
 
     if (action.matchedCount === 0) {
-      res.status(404).json({
+      res.status(HttpStatus.NOT_FOUND).json({
         data: null,
         message: 'Usuario no encontrado',
       });
@@ -244,7 +249,7 @@ export const deleteUser = async (req, res) => {
       message: 'Usuario eliminado exitosamente',
     });
   } catch (err) {
-    res.status(500).json({
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
       errors: {
         data: null,
         message: `ERROR: ${err}`,

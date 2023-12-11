@@ -1,3 +1,5 @@
+import HttpStatus from 'http-status-codes';
+
 import ProductsModel from '../models/ProductSchema.js';
 
 // ----------------------------
@@ -23,7 +25,8 @@ export const getProducts = async (_, res) => {
       message: data.length > 0 ? 'Productos encontrados' : 'Listado vacío',
     });
   } catch (err) {
-    res.status(500).json({
+    console.error('🟥', err);
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
       errors: {
         data: null,
         message: `ERROR: ${err}`,
@@ -54,7 +57,8 @@ export const getProduct = async (req, res) => {
       message: data ? 'Producto encontrado' : 'Producto no encontrado',
     });
   } catch (err) {
-    res.status(500).json({
+    console.error('🟥', err);
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
       errors: {
         data: null,
         message: `ERROR: ${err}`,
@@ -86,7 +90,8 @@ export const postProduct = async (req, res) => {
       message: 'Producto creado exitosamente',
     });
   } catch (err) {
-    res.status(500).json({
+    console.error('🟥', err);
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
       errors: {
         data: null,
         message: `ERROR: ${err}`,
@@ -119,7 +124,7 @@ export const putProduct = async (req, res) => {
 
     // matchedCount says how many elements were found to be modified
     if (action.matchedCount === 0) {
-      res.status(404).json({
+      res.status(HttpStatus.NOT_FOUND).json({
         data: null,
         message: 'Producto no encontrado',
       });
@@ -131,7 +136,8 @@ export const putProduct = async (req, res) => {
       message: 'Producto actualizado',
     });
   } catch (err) {
-    res.status(500).json({
+    console.error('🟥', err);
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
       errors: {
         data: null,
         message: `ERROR: ${err}`,
@@ -156,7 +162,7 @@ export const deleteProduct = async (req, res) => {
     );
 
     if (action.matchedCount === 0) {
-      res.status(404).json({
+      res.status(HttpStatus.NOT_FOUND).json({
         data: null,
         message: 'Producto no encontrado',
       });
@@ -168,7 +174,8 @@ export const deleteProduct = async (req, res) => {
       message: 'Producto eliminado',
     });
   } catch (err) {
-    res.status(500).json({
+    console.error('🟥', err);
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
       errors: {
         data: null,
         message: `ERROR: ${err}`,

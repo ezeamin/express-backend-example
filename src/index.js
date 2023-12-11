@@ -9,6 +9,9 @@ import routerProducts from './routes/productsRoutes.js';
 import routerAuth from './routes/authRoutes.js';
 import routerUsers from './routes/userRoutes.js';
 
+console.clear(); // Clear any previous console logs
+console.log('⌛ Inicializando servidor...');
+
 // 1- Initialize server
 const app = express();
 
@@ -27,5 +30,5 @@ app.use('/api/v1/users', routerUsers);
 
 // 5- Server loop
 app.listen(PORT, () => {
-  console.log(`Servidor ejecutandose en puerto ${PORT}`);
+  console.log(`✅ Servidor iniciado -> Puerto ${PORT}\n`);
 });

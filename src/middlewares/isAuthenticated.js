@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import HttpStatus from 'http-status-codes';
 
 const secretKey = process.env.JWT_SECRET_KEY;
 
@@ -7,7 +8,7 @@ const isAuthenticated = (req, res, next) => {
   const authHeader = headers.authorization; // string
 
   if (!authHeader) {
-    res.status(401).json({
+    res.status(HttpStatus.UNAUTHORIZED).json({
       data: null,
       message: 'Token no detectado en el header "Authorization"',
     });
@@ -26,7 +27,8 @@ const isAuthenticated = (req, res, next) => {
     next();
   } catch (err) {
     // invalid token
-    res.status(401).json({
+    console.error('🟥', err);
+    res.status(HttpStatus.UNAUTHORIZED).json({
       data: null,
       message: 'Token no valido o expirado',
     });

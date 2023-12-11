@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import HttpStatus from 'http-status-codes';
 
 import UsersModel from '../models/UserSchema.js';
 
@@ -26,7 +27,7 @@ export const postLogin = async (req, res) => {
     // a. incorrect username (no user found)
     // b. incorrect password (we compare them using bcrypt)
     if (!userInDB || !bcrypt.compareSync(password, userInDB.password.trim())) {
-      res.status(401).json({
+      res.status(HttpStatus.UNAUTHORIZED).json({
         data: null,
         message: 'Usuario o contraseña no valida(s)',
       });
@@ -58,7 +59,8 @@ export const postLogin = async (req, res) => {
       message: 'Login exitoso',
     });
   } catch (err) {
-    res.status(500).json({
+    console.error('🟥', err);
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
       errors: {
         data: null,
         message: `ERROR: ${err}`,
