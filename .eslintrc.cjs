@@ -1,5 +1,4 @@
 module.exports = {
-  extends: 'airbnb-base',
   env: {
     es6: true,
     browser: true,
@@ -13,4 +12,5 @@ module.exports = {
     'no-console': 'off',
   },
   ignorePatterns: ['**/node_modules/**', '**/dist/**'],
+  extends: ['airbnb-base', 'plugin:prettier/recommended'],
 };
