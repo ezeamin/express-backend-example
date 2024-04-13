@@ -1,7 +1,9 @@
 import jwt from 'jsonwebtoken';
 import HttpStatus from 'http-status-codes';
 
-const secretKey = process.env.JWT_SECRET_KEY;
+import { envs } from '../config/envs.js';
+
+const { JWT_SECRET_KEY } = envs;
 
 const isAuthenticated = (req, res, next) => {
   const { headers } = req;
@@ -19,7 +21,7 @@ const isAuthenticated = (req, res, next) => {
   const token = authHeader.split(' ')[1];
 
   try {
-    const tokenInfo = jwt.verify(token, secretKey);
+    const tokenInfo = jwt.verify(token, JWT_SECRET_KEY);
 
     req.user = tokenInfo.user;
 

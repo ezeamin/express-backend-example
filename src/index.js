@@ -6,6 +6,7 @@ import cors from 'cors';
 import './database/database.js';
 
 import { mainRouter } from './routes/mainRouter.js';
+import { envs } from './config/envs.js';
 
 console.clear(); // Clear any previous console logs
 console.log('⌛ Inicializando servidor...');
@@ -14,7 +15,7 @@ console.log('⌛ Inicializando servidor...');
 const app = express();
 
 // 2- Server configurations
-const PORT = process.env.PORT || 5000;
+const { PORT } = envs;
 
 // 3- Middlewares
 app.use(morgan('dev'));
